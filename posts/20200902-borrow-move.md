@@ -82,5 +82,14 @@ fn main() {
     let c = &mut mutable;
     **c += 1;
     println!("b contains {}", b);
+
+    // mượn từ một biến đã bị giải phóng
+    let reference_to_nothing = dangle();
+}
+
+fn dangle() -> &String {
+    let s = String::from("hello");
+    &s
+    // hết scope, s sẽ bị giải phóng
 }
 ```
