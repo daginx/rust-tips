@@ -2,8 +2,8 @@
 
 ## Một chút lằng nhằng
 
-- Khi lập trình thì ta đã quá quen thuộc với khái niệm `pass by value` và `pass by reference` rồi. Mỗi ngôn ngữ sẽ có cách xử lý hai vấn đề này riêng và Rust cũng vậy. Đó chính là chủ đề của bài này, một số ví dụ về sử dụng khái niệm con trỏ thông minh (smart pointer) trong Rust (cái `pass by value` thì không đề cập ở đây đâu nha).
-- Nếu các bạn đã từng học c hay c++ căn bản và đã từng sử dụng con trỏ thì mấy cái này chắc không làm khó bạn mấy đâu. Với mình thì khó lắm :)
+- Khi lập trình thì ta đã quá quen thuộc với khái niệm `pass by value` và `pass by reference` rồi. Mỗi ngôn ngữ sẽ có cách xử lý hai vấn đề này riêng và Rust cũng vậy. Đó chính là mục đích bài viết này nhắm đến, giới thiệu một số ví dụ về việc sử dụng con trỏ thông minh (smart pointer) trong Rust (cái `pass by value` thì tạm không đề cập, mà có khi đề cập đến mà cũng không biết).
+- Nếu các bạn đã từng học C hay C++ và đã từng sử dụng con trỏ thì mấy cái này chắc không làm khó bạn mấy đâu. Với mình thì khó lắm :).
 - Lấy `Box` ra làm ví dụ đầu tiên. Khi bạn khai báo `let b = Box::new(5)` thì thực chất cái biến b kia chỉ đang lưu địa chỉ của nơi biến 5 kia được lưu mà thôi (heap đó). Và muốn lấy giá trị ra thì bạn phải dùng `*b` (nhìn quen nhể). Ở Rust thì nó được gọi là [Deref](https://doc.rust-lang.org/std/ops/trait.Deref.html). Chắc cứ tạm dịch là khử tham chiếu.
 
 ```rust
@@ -19,7 +19,7 @@ fn main() {
 
 ## Các loại con trỏ thường gặp
 
-- Rust cung cấp cho ta một số abtraction hữu ích để sử dụng con trỏ tuỳ vào trường hợp và mục đích sử dụng.
+- Khái niệm ownership giúp Rust giải phóng bộ nhớ mà không cần đến GC (Garbage Collector) nhưng kéo theo đó là việc sử dụng con trỏ cũng phức tạp hơn nhiều. Bạn phải lựa chọn loại con trỏ phù hợp với mục đích sử dụng của mình.
 - Nói ngắn gọn thì ta có
 
   - Box<T> dùng cho một quyền sở hữu
@@ -30,11 +30,18 @@ fn main() {
 - Một chút ví dụ
 
 ```rust
+use std::rc::Rc;
+
 fn main() {
     let x = Box::new(1);
     let y = x; // quyền sở hữu được được chuyển từ x sang cho y
     // từ đoạn code sau này không thể dùng x nữa
 
-
+    let foo = Rc::new(vec![1.0, 2.0, 3.0]);
+    // bạn có thể clone foo bằng 2 cách sau
+    let a = foo.clone();
+    let b = Rc::clone(&foo);
+    // ta có thẻ dùng cả a và b và chúng đều refer đến foo
+    // Rc chỉ cho phép bạn đọc chứ không cho phép thay đổi dữ liệu
 }
 ```
