@@ -47,3 +47,9 @@ fn main() {
     // vector sẽ được giải phóng nếu không còn Rc nào trỏ vào nó
 }
 ```
+
+- Rc là viết tắt của Reference Counted. Như tên gọi Rc sẽ đếm số lần một biến được clone.
+- Nhưng như mọi ngôn ngữ khác, việc đếm hay có thể nói là increment có thể đúng với đơn luồng nhưng chưa chắc đã đúng
+  với đa luồng, vì vậy Rc có một biến thể Arc (Atomically Rc) để có thể sử dụng với nhiều thread.
+- Tất nhiên luôn có sự đánh đổi, Atomic tức là sẽ có sự block tài nguyên và làm giảm hiệu năng của chương trình xuống.
+  Vì vậy hãy lựa chọn dùng một cách sáng suốt.
