@@ -43,5 +43,7 @@ fn main() {
     let b = Rc::clone(&foo);
     // ta có thẻ dùng cả a và b và chúng đều refer đến foo
     // Rc chỉ cho phép bạn đọc chứ không cho phép thay đổi dữ liệu
+
+    // vector sẽ được giải phóng nếu không còn Rc nào trỏ vào nó
 }
 ```
