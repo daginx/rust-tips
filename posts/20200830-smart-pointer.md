@@ -53,3 +53,26 @@ fn main() {
   với đa luồng, vì vậy Rc có một biến thể Arc (Atomically Rc) để có thể sử dụng với nhiều thread.
 - Tất nhiên luôn có sự đánh đổi, Atomic tức là sẽ có sự block tài nguyên và làm giảm hiệu năng của chương trình xuống.
   Vì vậy hãy lựa chọn dùng một cách sáng suốt.
+
+```rust
+use std::sync::Arc;
+use std::thread;
+
+fn main() {
+    let five = Arc::new(5);
+    let mut children = vec![];
+
+    for _ in 0..10 {
+        // clone và dùng thôi
+        let five = Arc::clone(&five);
+
+        children.push(thread::spawn(move || {
+            println!("{:?}", five);
+        }));
+    }
+
+    for child in children {
+        let _ = child.join();
+    }
+}
+```
